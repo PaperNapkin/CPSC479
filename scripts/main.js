@@ -7,8 +7,18 @@ function newUser(){
 		  password : $("#input_password").val()
 		}, function(error, userData) {
 		  if (error) {
+
+		  	$('#authError').addClass("errorTxt");
+		  	$('#authError').text("Error Creating User");
 		    console.log("Error creating user:", error);
+
 		  } else {
+		  	$('#authError').addClass("validTxt");
+		  	$('#authError').text("User Created!");
+		  	setTimeout(function(){
+		  		$('#authError').text('');
+		  	}, 2000);
+
 		    console.log("Successfully created user account with uid:", userData.uid);
 		  }
 	});
@@ -20,10 +30,22 @@ function login(){
 		  password : $("#input_password").val()
 		}, function(error, authData) {
 		  if (error) {
+
+		  	$('#authError').addClass("errorTxt");
+		  	$('#authError').text("Error Creating User");
+
 		    console.log("Login Failed!", error);
+
 		  } else {
+
+		  	$('#authError').addClass("validTxt");
+		  	$('#authError').text("Login Successful!");
+		  	setTimeout(function(){
+		  		$('#authError').text('');
+		  	}, 2000);
 		    console.log("Authenticated successfully with payload:", authData);
 		    transition("div.splashBox", "div.ui", null);
+
 		  }
 	});
 }
@@ -35,6 +57,5 @@ function transition(last, next, callback){
 		$(next).animate({opacity:1},500,callback);
 	}
 	$(last).animate({opacity:0},500,afterAnim);
-
-
 }
+

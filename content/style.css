@@ -1,6 +1,6 @@
 .loginBox{
 
-	height:200px;
+	min-height:200px;
 	width:300px;
 	background: #D8C7B5;
 	color: #7D644B;
@@ -50,4 +50,14 @@
 	background: #CC33FF;
 	opacity:0;
 	display:none;
+}
+
+.errorTxt{
+	font-size:20px;
+	color:#FF5050;
+}
+
+.validTxt{
+	font-size:20px;
+	color: #33CC33;
 }
