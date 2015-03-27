@@ -32,7 +32,7 @@ function login(){
 		  if (error) {
 
 		  	$('#authError').addClass("errorTxt");
-		  	$('#authError').text("Error Creating User");
+		  	$('#authError').text("Error Logging in ");
 
 		    console.log("Login Failed!", error);
 
