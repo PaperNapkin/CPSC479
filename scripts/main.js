@@ -46,24 +46,26 @@ function login(){
                     var s = "https://glaring-heat-449.firebaseio.com/users/" +  authData.uid; //Create the reference to the user list
                     var usersRef =  new Firebase(s);
                     usersRef.once("value",function(data){
-                      if (data.val() === null)
-                      {
+                      if (data.val() === null)                                            //If there isn't a record for this user (i.e. first authentication),
+                      {                                                                   //Create one and put it on the database
                         usersRef.set({"userId": authData.uid, "projects": "hello"});
                         console.log(s);
                         console.log(data.val()); 
                       }                    
+ 
+		      console.log("Authenticated successfully with payload:", authData);  //Transition only after we've added the user node to the database
+		      transition("div.splashBox", "div.ui", null);
+
+
                     }); 
                     
-                    var newRef = new Firebase(s);
+                    //This check may not be reliable because it may be called before the callback function that initializes the user data.
+                   /* var newRef = new Firebase(s);
                     newRef.once("value",function(data){
                     console.log(data.val()); 
-                    }); 
+                    }); */ 
 
-  
-		    console.log("Authenticated successfully with payload:", authData);
-		    transition("div.splashBox", "div.ui", null);
-
-		  }
+ 		  }
 	});
 }
 
