@@ -48,11 +48,23 @@ function login(){
                     usersRef.once("value",function(data){
                       if (data.val() === null)                                            //If there isn't a record for this user (i.e. first authentication),
                       {                                                                   //Create one and put it on the database
+                        console.log("New reference being created...");)
+                        console.log("referenced used:"+ s);
+                        console.log(data.val());  
+                        
                         usersRef.set({"userId": authData.uid, "projects": "hello"});
-                        console.log(s);
-                        console.log(data.val()); 
-                      }                    
- 
+                     }                    
+                      else
+                      {
+                        console.log("user node already exists");
+                      }
+
+                      //Secondary Check for sanity
+                      usersRef.once("value",function(data){
+                        console.log("Check for the user node after it was potentially added");
+                        console.log(data.val());  
+                      });                    
+                      
 		      console.log("Authenticated successfully with payload:", authData);  //Transition only after we've added the user node to the database
 		      transition("div.splashBox", "div.ui", null);
 
