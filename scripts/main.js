@@ -18,7 +18,6 @@ function newUser(){
 		  	setTimeout(function(){
 		  		$('#authError').text('');
 		  	}, 2000);
-
 		    console.log("Successfully created user account with uid:", userData.uid);
 		  }
 	});
@@ -43,6 +42,24 @@ function login(){
 		  	setTimeout(function(){
 		  		$('#authError').text('');
 		  	}, 2000);
+
+                    var s = "https://glaring-heat-449.firebaseio.com/users/" +  authData.uid; //Create the reference to the user list
+                    var usersRef =  new Firebase(s);
+                    usersRef.once("value",function(data){
+                      if (data.val() === null)
+                      {
+                        usersRef.set({"userId": authData.uid, "projects": "hello"});
+                        console.log(s);
+                        console.log(data.val()); 
+                      }                    
+                    }); 
+                    
+                    var newRef = new Firebase(s);
+                    newRef.once("value",function(data){
+                    console.log(data.val()); 
+                    }); 
+
+  
 		    console.log("Authenticated successfully with payload:", authData);
 		    transition("div.splashBox", "div.ui", null);
 
