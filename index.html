@@ -28,8 +28,8 @@
 
 		<div id="mainMenu" style="opacity: 0; display: none;">
 				<h1 class="text-center headerStyle"> Menu </h1>
-				<button class="menuButton" onclick="newSession()"> New Session </button> <br/>
-				<button class="menuButton" onclick="oldSession()"> Gallery </button> <br />
+				<button class="menuButton" onclick="loadNewSessionMenu()"> New Session </button> <br/>
+				<button class="menuButton" onclick="loadGalleryMenu()"> Gallery </button> <br />
 		</div>
 
 		<div id="newSessionMenu" style="opacity: 0; display: none;">
@@ -37,22 +37,24 @@
 
 				<label for sessionName> Session Name </label>
 				<input class="menuInput" id="input_sessionName" type="text" name="sessionName"></input>
-				<label for member>Select Collaborator</label><br />
-				<select class="menuInput" id="select_member">
-					<option> None </option>
-				</select>	<br />
-
-				<button class="menuButton" onclick="previousMenu()"> Back </button> <br />
+				<label for member>Name of Collaborator?</label><br />
+				<input class="menuInput" id="input_member" type="text" name="member"></input>
+				<button class="menuButton" onclick="createSession()"> Create </button> <br />
+				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
 
 		</div>
 
-		<div id="oldSessionMenu" style="opacity: 0; display: none;">
+		<div id="galleryMenu" style="opacity: 0; display: none;">
 				<h2 class="text-center headerStyle"> Pick Existing Session </h1>
 				<select class="menuInput" id="select_session">
 					<option> None </option>
 				</select>	<br />
 				<button class="menuButton" onclick="beginTurn()"> Begin Turn </button> <br />
-				<button class="menuButton" onclick="previousMenu()"> Back </button> <br />
+				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+		</div>
+
+		<div class="loadingBox" id="loading" style="opacity: 0; display: none;">
+				<h4> Loading <img src="content/loader.gif"</img> </h4> 
 		</div>
 
 	</div>

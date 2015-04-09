@@ -62,3 +62,13 @@
 	font-size:20px;
 	color: #33CC33;
 }
+
+.loadingBox{
+	border: 2px solid #2E1F0F;
+	border-radius: 10px;
+	margin-top: 60px;
+	background: #7D644B;
+	text-align: center;
+	color: #D8C7B5;
+	padding: 2px;
+}
