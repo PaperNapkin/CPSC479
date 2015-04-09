@@ -48,7 +48,7 @@ function login(){
                     usersRef.once("value",function(data){
                       if (data.val() === null)                                            //If there isn't a record for this user (i.e. first authentication),
                       {                                                                   //Create one and put it on the database
-                        console.log("New reference being created...");)
+                        console.log("New reference being created...");
                         console.log("referenced used:"+ s);
                         console.log(data.val());  
                         
@@ -86,7 +86,9 @@ function transition(last, next, callback){
 		$(last).hide();
 		$(next).show();
 		$(next).animate({opacity:1},500,callback);
+		$("button").removeAttr('disabled');
 	}
 	$(last).animate({opacity:0},500,afterAnim);
+	$("button").attr('disabled', "true");
 }
 
