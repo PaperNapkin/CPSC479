@@ -12,24 +12,49 @@
 
 <body>
 	<div class="center-block">
-	<div class="splashBox">
-		<h1 class="text-center headerStyle"> Welcome to Paper Napkin </h1>
-		<div class="loginBox center-block">
-		<label for userName>Username </label>
-		<input class="loginInput" id="input_userName" type="text" name="userName"></input>
-		<label for password>Password </label>
-		 <input class="loginInput" id="input_password" type="password" name="Password"></input>
-		 <br>
-		<button class="loginButton" onclick="newUser()">New User</button>
-		<button class="loginButton" onclick="login()">Login</button> 
-		<div id="authError"></div>
+			<h1 id="title" class="text-center headerStyle"> Welcome to Paper Napkin </h1>
+	<div id="menuWrapper" class="menuBox center-block">
+		<div id="loginMenu">
+		
+				<label for userName>Username </label>
+				<input class="menuInput" id="input_userName" type="text" name="userName"></input>
+				<label for password>Password </label>
+				 <input class="menuInput" id="input_password" type="password" name="Password"></input>
+				 <br>
+				<button class="menuButton" onclick="newUser()">New User</button>
+				<button class="menuButton" onclick="login()">Login</button> 
+				<div id="authError"></div>
 		</div>
+
+		<div id="mainMenu" style="opacity: 0; display: none;">
+				<h1 class="text-center headerStyle"> Menu </h1>
+				<button class="menuButton" onclick="newSession()"> New Session </button> <br/>
+				<button class="menuButton" onclick="oldSession()"> Gallery </button> <br />
+		</div>
+
+		<div id="newSessionMenu" style="opacity: 0; display: none;">
+				<h2 class="text-center headerStyle"> Create New Session </h1>
+
+				<label for sessionName> Session Name </label>
+				<input class="menuInput" id="input_sessionName" type="text" name="sessionName"></input>
+				<label for member>Select Collaborator</label><br />
+				<select class="menuInput" id="select_member">
+					<option> None </option>
+				</select>	<br />
+
+				<button class="menuButton" onclick="previousMenu()"> Back </button> <br />
+
+		</div>
+
+		<div id="oldSessionMenu" style="opacity: 0; display: none;">
+				<h2 class="text-center headerStyle"> Pick Existing Session </h1>
+				<select class="menuInput" id="select_session">
+					<option> None </option>
+				</select>	<br />
+				<button class="menuButton" onclick="previousMenu()"> Back </button> <br />
+		</div>
+
 	</div>
-	<div class="ui">
-		<t id="sometext"><t>
-	</div>
-</div>
-	
 
 </body>
   

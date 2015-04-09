@@ -1,5 +1,7 @@
 
 var ref = new Firebase("https://glaring-heat-449.firebaseio.com");
+var prevMenu = null;
+var currentMenu = null;
 
 function newUser(){ 
 	ref.createUser({
@@ -66,7 +68,9 @@ function login(){
                       });                    
                       
 		      console.log("Authenticated successfully with payload:", authData);  //Transition only after we've added the user node to the database
-		      transition("div.splashBox", "div.ui", null);
+		      transition("#loginMenu", "#mainMenu", function(){
+		      	$("#title").animate({opacity:0},500, null);
+		      });
 
 
                     }); 
@@ -81,7 +85,26 @@ function login(){
 	});
 }
 
+function newSession(){
+	transition("#mainMenu", "#newSessionMenu", null);
+
+	//Name
+	//Collaborator
+}
+
+function oldSession(){
+	transition("#mainMenu", "#oldSessionMenu", null);
+
+}
+
+function previousMenu(){
+	transition(currentMenu, prevMenu, null);
+}
+
+
 function transition(last, next, callback){
+	prevMenu = last;
+	currentMenu = next;
 	var afterAnim = function(){
 		$(last).hide();
 		$(next).show();
