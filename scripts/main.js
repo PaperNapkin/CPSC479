@@ -80,7 +80,7 @@ function loadNewSessionMenu(){
 	var member = $("#input_member").val();
 
 	console.log(member);
-
+	
 	//Name
 	//Collaborator
 
@@ -91,6 +91,8 @@ function loadGalleryMenu(){
 	var loadGalleryData = function () {
 		// Query firebase for gallery related data
 		// make sure the transition call below is called after data retrieval completes.
+
+		// End query
 		transition("#loading", "#galleryMenu", null);
 	}
 
@@ -110,7 +112,7 @@ function transition(last, next, callback){
 	prevMenu = last;
 	currentMenu = next;
 	console.log(last, next);
-	
+
 	var afterAnim = function(){
 		$(last).hide();
 		console.log(next);
