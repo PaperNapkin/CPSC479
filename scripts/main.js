@@ -101,6 +101,9 @@ function previousMenu(){
 	transition(currentMenu, prevMenu, null);
 }
 
+function beginTurn(){
+	console.log("lol!");
+}
 
 function transition(last, next, callback){
 	prevMenu = last;
