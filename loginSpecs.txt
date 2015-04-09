@@ -1,0 +1,52 @@
+upon login, you look for your user node (only readable by you)
+invite list must be of proper form, also can only append to it
+
+uid{    
+  projects list [(p1, name1,creator bool),p2,p3,p4] r/w: just you
+  invites list [(p1,name, creator bool) list]       r: just you, w: anybody (but validated)
+}
+
+pnode{    r/w: collaborators
+  name: 
+  collaborators: list 
+  turn: <to be updated each time>
+  file: <file from front end>
+  rules: (to be added later)
+}
+
+You can either create/delete/edit a project or accept/decline an invitation and repeat this step
+
+enter a project:
+
+get the /projects/p# node (r/w for creator and collaborator always)
+(if you can't find the project, then assume it was deleted or declined (depending on who created it)
+ remove from your own projects list)
+otherwise, check it's your turn, open editor (send file and rules)
+... (get new file) ...
+write to pnode with updated file, (updated rules?), new turn (of the other person).
+go back to gallery
+
+implement turn checker to prevent writing if it isn't your turn
+
+create a project:
+you must give it a name
+you specify another user to collaborate (do we want to have a search feature?  how do you specify the user?)
+  enforce that it is another user (not you) ?
+(note that creator necessarily takes the first turn
+a new canvas is opened on front end
+after editing, pnode is created and written, uid node project list is updated (you are creator).
+reload gallery
+
+delete a project:
+you must be the creator of the project
+you delete it (.remove())
+you remove the project from your projects list (other person removes it from their own user node when subsequent get fails)
+
+accept an invitation:
+move project tuple from invite list to projects list (you are NOT creator).
+reload gallery
+
+decline an invitationn:
+remove project node
+remove project tuple from invite list. 
+relaod gallery
