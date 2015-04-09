@@ -37,7 +37,7 @@ function login(){
 
 		    console.log("Login Failed!", error);
 
-		  } else {
+		  } else { //Successful login
 
 		  	$('#authError').addClass("validTxt");
 		  	$('#authError').text("Login Successful!");
@@ -51,36 +51,21 @@ function login(){
                       if (data.val() === null)                                            //If there isn't a record for this user (i.e. first authentication),
                       {                                                                   //Create one and put it on the database
                         console.log("New reference being created...");
-                        console.log("referenced used:"+ s);
-                        console.log(data.val());  
-                        
-                        usersRef.set({"userId": authData.uid, "projects": "hello"});
-                     }                    
+                        usersRef.set({"projects": "", "invites": ""});
+                      }                    
                       else
                       {
                         console.log("user node already exists");
                       }
-
-                      //Secondary Check for sanity
-                      usersRef.once("value",function(data){
-                        console.log("Check for the user node after it was potentially added");
-                        console.log(data.val());  
-                      });                    
-                      
-		      console.log("Authenticated successfully with payload:", authData);  //Transition only after we've added the user node to the database
+                      console.log("Authenticated successfully with payload:", authData);  //Transition only after we've added the user node to the database
 		      transition("#loginMenu", "#mainMenu", function(){
 		      	$("#title").animate({opacity:0},500, null);
-		      });
+                      });                    
+                      
+		     });
 
 
                     }); 
-                    
-                    //This check may not be reliable because it may be called before the callback function that initializes the user data.
-                   /* var newRef = new Firebase(s);
-                    newRef.once("value",function(data){
-                    console.log(data.val()); 
-                    }); */ 
-
  		  }
 	});
 }
