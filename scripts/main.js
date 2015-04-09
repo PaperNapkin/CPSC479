@@ -48,7 +48,7 @@ function login(){
                     usersRef.once("value",function(data){
                       if (data.val() === null)                                            //If there isn't a record for this user (i.e. first authentication),
                       {                                                                   //Create one and put it on the database
-                        console.log("New reference being created...");)
+                        console.log("New reference being created...");
                         console.log("referenced used:"+ s);
                         console.log(data.val());  
                         
