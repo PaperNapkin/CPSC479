@@ -6,9 +6,8 @@ uid{
   invites list [(p1,name, creator bool) list]       r: just you, w: anybody (but validated)
 }
 
-pnode{    r/w: collaborators
-  name: 
-  collaborators: list 
+pnode{    r/w: collaborators         (node name is session name 
+  members: (array, zeroeth user is creator)
   turn: <to be updated each time>
   file: <file from front end>
   rules: (to be added later)
