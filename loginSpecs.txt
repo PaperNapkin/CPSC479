@@ -16,7 +16,7 @@ pnode{    r/w: collaborators         (node name is session name
 You can either create/delete/edit a project or accept/decline an invitation and repeat this step
 
 enter a project:
-
+(Write the names of the project in a certain color if it's your turn, other if not)
 get the /projects/p# node (r/w for creator and collaborator always)
 (if you can't find the project, then assume it was deleted or declined (depending on who created it)
  remove from your own projects list)
