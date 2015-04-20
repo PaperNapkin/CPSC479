@@ -9,7 +9,7 @@ var client = null;
 // our email
 var clientEmail = null;
 
-function appendToField(url, field, elt){
+function appendToField(url, field, elt, callback){
 	var ref = new Firebase(url);
 
 	ref.once("value", function(data){
@@ -34,8 +34,71 @@ function appendToField(url, field, elt){
 		if(!eltExists){
 			arr.push(elt);
 			obj[field] = arr;
-			ref.set(obj);
+
+			if(callback != null){
+				ref.set(obj, callback);
+			}
+			else{
+				ref.set(obj);
+			}
+
 		}
+
+		
+		
+	});
+}
+
+function deleteFromField(url, field, elt, callback){
+	var ref = new Firebase(url);
+	// MAKE SURE URL IS PASSED IN WITHOUT A TRAILING BACKSLASH....???
+	ref.once("value", function(data){
+		var obj = data.val();
+		var arr = null;
+
+		if (obj.hasOwnProperty(field)) {
+			arr = obj[field];
+			var indexToRemove = null
+			for(var i = 0; i < arr.length; i++){
+				if(arr[i] == elt){
+					indexToRemove = i;
+					break;
+				}
+			}
+			if(indexToRemove != null){
+
+				console.log(arr);
+				console.log("removing element", indexToRemove);
+				arr.splice(i, 1);
+				console.log(arr, arr.length);
+				if(arr.length == 0){
+
+					delete obj[field];
+					/*var b = url + "/" + field;
+					var newRef = new Firebase(b);
+					newRef.remove();*/
+
+				}
+
+				if(callback != null){
+					ref.set(obj, callback());
+				}
+				else{
+					ref.set(obj);
+				}
+
+			}
+			else{
+				console.log("field does not contain element");
+			}
+
+		}
+		else{
+			console.log("User does not have field");
+		}
+
+		
+
 	});
 }
 
@@ -130,6 +193,109 @@ function loadNewSessionMenu(){
 
 }
 
+function loadInvitesMenu(){
+
+
+	var loadGalleryData = function () {
+		// Query firebase for gallery related data
+		
+		var a = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+		var ref = new Firebase(a);
+
+		// load invitations
+		ref.once("value", function(data){
+
+			var invites = data.val().invites;
+			console.log(invites);
+			if(invites.length > 0){
+
+				$("#select_invite").empty();
+				for(var i = 0; i < invites.length ; i++){
+				$("#select_invite").append($("<option></option>")
+							         .attr("value",invites[i])
+							         .text(invites[i])); 
+          									
+				}
+			}
+			
+
+
+		});
+
+
+
+		// End query
+		transition("#loading", "#invitesMenu", null);
+	}
+
+	transition("#mainMenu", "#loading", loadGalleryData);
+
+}
+
+
+function beginTurn(){
+	var selected = $("#select_session").val();
+	var a = "https://glaring-heat-449.firebaseio.com/projects/" + selected;
+
+	var ref = new Firebase(a);
+
+	ref.once("value", function(data){
+		var obj = data.val();
+		if(obj != null){
+
+			// invoke wiget
+
+		}
+		else{
+			console.log("project appears to have been deleted");
+
+			var url = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+
+			deleteFromField(url, "projects", selected);
+
+		}
+
+	});
+
+}
+
+function deleteProject(){
+	var selected = $("#select_session").val();
+	var a = "https://glaring-heat-449.firebaseio.com/projects/" + selected;
+
+	var ref = new Firebase(a);
+	ref.once("value", function(data){
+		var obj = data.val();
+		if(obj.turn == clientEmail){
+			var url = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+			deleteFromField(url, "projects", selected);
+			ref.remove();
+			// also delete the file
+		}
+		else{
+			console.log("its not your turn, you cant delete this project");
+		}
+	});
+}
+
+function acceptInvite(){
+
+		var selected = $("#select_invite").val();
+		var a = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+		var ref = new Firebase(a);
+
+		var callback = function(){
+			 deleteFromField(a, "invites", selected)
+		}
+
+		if (selected != "None"){
+			appendToField(a, "projects", selected, callback);		
+		}
+
+		transition("#invitesMenu", "#mainMenu", null);
+
+}
+
 function createSession(){
 	var s = "https://glaring-heat-449.firebaseio.com/users/";
 
@@ -188,12 +354,13 @@ function createSession(){
 
 			// add invite for collaborattor 
 			var a = "https://glaring-heat-449.firebaseio.com/users/" + someUserKey;
-			appendToField(a, "invites", sessionName);
+			appendToField(a, "invites", sessionName, null);
 
 			// add project to client
 			var b = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
-			appendToField(b, "projects", sessionName);
+			appendToField(b, "projects", sessionName, null);
 
+			transition("#newSessionMenu", "#mainMenu", null);
 		}
 
 	});
@@ -217,7 +384,7 @@ function loadGalleryMenu(){
 			$("#select_session").empty();
 			for(var i = 0; i < projects.length ; i++){
 				$("#select_session").append($("<option></option>")
-							         .attr("value",i)
+							         .attr("value",projects[i])
 							         .text(projects[i])); 
           									
 			}
@@ -237,9 +404,6 @@ function loadMainMenu(){
 	transition(currentMenu, "#mainMenu", null);
 }
 
-function beginTurn(){
-	;
-}
 
 function transition(last, next, callback){
 	prevMenu = last;

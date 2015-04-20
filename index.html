@@ -30,6 +30,7 @@
 				<h1 class="text-center headerStyle"> Menu </h1>
 				<button class="menuButton" onclick="loadNewSessionMenu()"> New Session </button> <br/>
 				<button class="menuButton" onclick="loadGalleryMenu()"> Gallery </button> <br />
+				<button class="menuButton" onclick="loadInvitesMenu()"> Manage Invitations </button> <br />
 		</div>
 
 		<div id="newSessionMenu" style="opacity: 0; display: none;">
@@ -44,12 +45,23 @@
 
 		</div>
 
+		<div id="invitesMenu"style="opacity: 0; display: none;">
+			<select class="menuInput" id="select_invite">
+					<option> None </option>
+			</select>	<br />
+		</br>
+			<button class="menuButton" onclick="acceptInvite()"> Accept Invite </button>
+
+		</div>
+
+
 		<div id="galleryMenu" style="opacity: 0; display: none;">
 				<h2 class="text-center headerStyle"> Pick Existing Session </h1>
 				<select class="menuInput" id="select_session">
 					<option> None </option>
 				</select>	<br />
 				<button class="menuButton" onclick="beginTurn()"> Begin Turn </button> <br />
+				<button class="menuButton" onclick="deleteProject()"> Delete Project </button> <br />
 				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
 		</div>
 
