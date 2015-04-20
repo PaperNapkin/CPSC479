@@ -1,3 +1,11 @@
+TODO:
+1) Go through and add user-visible error messages (not console) 
+2) Deal with None's in dropdown menus that don't make sense
+3) Cannot name a project None
+4) Add "You accepted invitation!" message before going back to main menu
+5) Add code in deleteProject() to also delete the file node !!!!
+
+
 upon login, you look for your user node (only readable by you)
 invite list must be of proper form, also can only append to it
 
@@ -8,7 +16,7 @@ uid{
 
 pnode{    r/w: collaborators         (node name is session name, must be unique (this could be corrected later) 
   members: (array, zeroeth user is creator)
-  turn: <to be updated each time>
+  turn: <to be updated each time> (your email)x
   rules: (to be added later)
 }
 
