@@ -6,11 +6,15 @@ uid{
   invites list [(p1,name, creator bool) list]       r: just you, w: anybody (but validated)
 }
 
-pnode{    r/w: collaborators         (node name is session name 
+pnode{    r/w: collaborators         (node name is session name, must be unique (this could be corrected later) 
   members: (array, zeroeth user is creator)
   turn: <to be updated each time>
-  file: <file from front end>
   rules: (to be added later)
+}
+
+(Same name as session, so also unique)
+file{
+  data: 
 }
 
 You can either create/delete/edit a project or accept/decline an invitation and repeat this step
