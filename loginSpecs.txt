@@ -1,3 +1,11 @@
+TODO:
+1) Go through and add user-visible error messages (not console) 
+2) Deal with None's in dropdown menus that don't make sense
+3) Cannot name a project None
+4) Add "You accepted invitation!" message before going back to main menu
+5) Add code in deleteProject() to also delete the file node !!!!
+
+
 upon login, you look for your user node (only readable by you)
 invite list must be of proper form, also can only append to it
 
@@ -6,17 +14,21 @@ uid{
   invites list [(p1,name, creator bool) list]       r: just you, w: anybody (but validated)
 }
 
-pnode{    r/w: collaborators         (node name is session name 
+pnode{    r/w: collaborators         (node name is session name, must be unique (this could be corrected later) 
   members: (array, zeroeth user is creator)
-  turn: <to be updated each time>
-  file: <file from front end>
+  turn: <to be updated each time> (your email)x
   rules: (to be added later)
+}
+
+(Same name as session, so also unique)
+file{
+  data: 
 }
 
 You can either create/delete/edit a project or accept/decline an invitation and repeat this step
 
 enter a project:
-
+(Write the names of the project in a certain color if it's your turn, other if not)
 get the /projects/p# node (r/w for creator and collaborator always)
 (if you can't find the project, then assume it was deleted or declined (depending on who created it)
  remove from your own projects list)

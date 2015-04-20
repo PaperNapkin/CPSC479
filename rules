@@ -1,0 +1,27 @@
+{
+	"rules":{
+		"users": {
+			"$user_id": {
+				"projects": {
+					"$pnode": {
+						".read": "$user_id === auth_id ||
+							$user_id === find_uid($pnode.members)",
+						".write": "$user_id === get_uid($pnode.turn)"
+
+					}
+				}
+				"invites": {
+					".read": "$user_id === auth.uid",
+					".write": true
+				}
+			}
+		}
+		"projects": {
+			"$pnode": {
+				".read": "$user_id === find_uid($pnode.members)"
+				".validate": "!data.exists() &&
+					newData.hasChildren(['file', 'members', 'rules', 'turn'])"
+			}
+		}
+	}
+}
