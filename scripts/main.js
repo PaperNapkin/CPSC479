@@ -123,9 +123,20 @@ function endTurn(){
 	}
 
 	$("#drawingWidget").hide();
-	$("#menuWrapper").show();
+	
 
-	transition("#loading", "#mainMenu", null);
+	$("#loadingProgress").hide();
+	$("#loadingResult").text("Turn Complete!");
+	$("#loadingResult").show();
+
+	$("#menuWrapper").show();
+	setTimeout(function(){
+		transition("#loading", "#mainMenu", function(){
+			$("#loadingResult").hide();
+			$("#loadingProgress").show();
+		});
+	},2000);
+	
 }
 
 function appendToField(url, field, elt, callback){
