@@ -3,16 +3,20 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="content/style.css">
 	<link rel="stylesheet" type="text/css" href="content/bootstrap.min.css">
+	<link href="content/literallycanvas.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.10.0/react-with-addons.js"></script>
+    <script src="scripts/literallycanvas.js"></script>
     <script src="scripts/jquery-1.9.1.min.js"></script>
    	<script src="scripts/bootstrap.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
+
     <script type="text/javascript" src="scripts/main.js"></script>
 
 </head>
 
 <body>
 	<div class="center-block">
-			<h1 id="title" class="text-center headerStyle"> Welcome to Paper Napkin </h1>
+	<h1 id="title" class="text-center headerStyle"> Welcome to Paper Napkin </h1>
 	<div id="menuWrapper" class="menuBox center-block">
 		<div id="loginMenu">
 		
@@ -23,7 +27,7 @@
 				 <br>
 				<button class="menuButton" onclick="newUser()">New User</button>
 				<button class="menuButton" onclick="login()">Login</button> 
-				<div id="authError"></div>
+				
 		</div>
 
 		<div id="mainMenu" style="opacity: 0; display: none;">
@@ -46,11 +50,13 @@
 		</div>
 
 		<div id="invitesMenu"style="opacity: 0; display: none;">
+		<br/>
+			<h2> Accept an Invite </h2>
 			<select class="menuInput" id="select_invite">
 					<option> None </option>
 			</select>	<br />
-		</br>
-			<button class="menuButton" onclick="acceptInvite()"> Accept Invite </button>
+			<button class="menuButton" onclick="acceptInvite()"> Accept Invite </button> <br />
+			<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
 
 		</div>
 
@@ -66,10 +72,24 @@
 		</div>
 
 		<div class="loadingBox" id="loading" style="opacity: 0; display: none;">
-				<h4> Loading <img src="content/loader.gif"</img> </h4> 
+				<div id="loadingProgress">
+					<h4> Loading <img src="content/loader.gif"</img> </h4> 
+				</div>
+				<div id="loadingResult" style="display: none;">
+				</div>
 		</div>
 
+		
+
+		<div id="errorMsg"></div>
+
 	</div>
+	<div id="drawingWidget">
+		<div class="literally">
+		</div>
+		<button class="menuButton" onclick="endTurn()">End Turn</button>
+	</div>
+</div>
 
 </body>
   
