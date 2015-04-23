@@ -123,19 +123,23 @@ function endTurn(){
 	}
 
 	$("#drawingWidget").hide();
-	
-
-	$("#loadingProgress").hide();
-	$("#loadingResult").text("Turn Complete!");
-	$("#loadingResult").show();
-
 	$("#menuWrapper").show();
+
 	setTimeout(function(){
-		transition("#loading", "#mainMenu", function(){
-			$("#loadingResult").hide();
-			$("#loadingProgress").show();
-		});
-	},2000);
+
+		$("#loadingProgress").hide();
+		$("#loadingResult").text("Turn Complete.");
+		$("#loadingResult").show();
+
+		
+		setTimeout(function(){
+			transition("#loading", "#mainMenu", function(){
+				$("#loadingResult").hide();
+				$("#loadingProgress").show();
+			});
+		},1000);
+
+	},1000);
 	
 }
 
