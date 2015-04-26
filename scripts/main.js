@@ -324,13 +324,13 @@ function loadNewSessionData(callback){
 		console.log("rofl!");
 		var finished = data.val().finished;
 		$("#select_src").empty();
+		$("#select_src").append($("<option></option>")
+												   .attr("value","None")
+												   .text("None"));
+
 		if(finished != undefined && finished.length > 0){
 			$("#select_src_label").show();
 			$("#select_src").show();
-			console.log(finished);
-			$("#select_src").append($("<option></option>")
-												   .attr("value","None")
-												   .text("None"));
 			for(var i = 0; i < finished.length; i++){
 				var item = finished[i];
 				$("#select_src").append($("<option></option>")
@@ -859,7 +859,7 @@ function loadFinishedMenu(){
 
 function loadFinished(){
 	console.log("ming");
-	
+
 	var selected = $("#select_finished").val();
 	if(selected != undefined && selected != "None"){
 		var fileUrl = "https://glaring-heat-449.firebaseio.com/files/" + selected;
