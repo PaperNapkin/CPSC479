@@ -33,8 +33,9 @@
 		<div id="mainMenu" style="opacity: 0; display: none;">
 				<h1 class="text-center headerStyle"> Menu </h1>
 				<button class="menuButton" onclick="loadNewSessionMenu()"> New Session </button> <br/>
-				<button class="menuButton" onclick="loadGalleryMenu()"> Gallery </button> <br />
-				<button class="menuButton" onclick="loadInvitesMenu()"> Manage Invitations </button> <br />
+				<button class="menuButton" onclick="loadGalleryMenu()"> Napkins </button> <br />
+				<button class="menuButton" onclick="loadInvitesMenu()"> Invitations </button> <br />
+				<button class="menuButton" onclick="loadFinishedMenu()"> Gallery </button> <br />
 		</div>
 
 		<div id="newSessionMenu" style="opacity: 0; display: none;">
@@ -44,12 +45,20 @@
 				<input class="menuInput" id="input_sessionName" type="text" name="sessionName"></input>
 				<label for member>Name of Collaborator?</label><br />
 				<input class="menuInput" id="input_member" type="text" name="member"></input>
+					<label id="select_src_label"> Use Existing Napkin as Source? </label>
+					<select class="menuInput" id="select_src">
+						<option> None </option>
+					</select>	<br />
+				<button class="menuButton" onClick="openRulesConfiguration()"> Configure Rules </button>
+				<div id="rulesConfig" style="display: none;">
+					<label> Rotation </label><input type="text"></input>
+				</div>
 				<button id="createSessionButton" class="menuButton" onclick="createSession()"> Create </button> <br />
 				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
 
 		</div>
 
-		<div id="invitesMenu"style="opacity: 0; display: none;">
+		<div id="invitesMenu" style="opacity: 0; display: none;">
 		<br/>
 			<h2> Accept an Invite </h2>
 			<select class="menuInput" id="select_invite">
@@ -71,23 +80,33 @@
 				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
 		</div>
 
+		<div id="finishedMenu" style="opacity: 0; display: none;">
+			<h2 class="text-center headerStyle"> Pick Napkin to View </h1>
+
+				<select class="menuInput" id="select_finished">
+					<option> None </option>
+				</select>	<br />
+
+				<button class="menuButton" onclick="loadFinished()"> Load </button> <br />
+
+			<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+		</div>
+
 		<div class="loadingBox" id="loading" style="opacity: 0; display: none;">
 				<div id="loadingProgress">
-					<h4> Loading <img src="content/loader.gif"</img> </h4> 
+					<h4> Loading <img id="loadingSpinner" src="content/loader.gif"</img> </h4> 
 				</div>
 				<div id="loadingResult" style="display: none;">
 				</div>
 		</div>
 
-		
-
 		<div id="errorMsg"></div>
 
 	</div>
+	
 	<div id="drawingWidget">
-		<div class="literally">
-		</div>
-		<button class="menuButton" onclick="endTurn()">End Turn</button>
+		<div class="literally"></div>
+		<button class="menuButton" id="endTurnButton" onclick="endTurn()">End Turn</button>
 	</div>
 </div>
 

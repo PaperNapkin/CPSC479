@@ -7,7 +7,6 @@
 	font-size: 20px;
 	font-family: Certa;
 	border: 2px solid #7D644B;
-	border-radius: 10px;
 	padding: 10px;
 	text-align: center;
 	margin: 20px;
@@ -72,4 +71,12 @@
 	text-align: center;
 	color: #D8C7B5;
 	padding: 2px;
+}
+
+.clientTurn{
+	color: "black";
+}
+
+.memberTurn{
+	color: "#CCCCCC";
 }

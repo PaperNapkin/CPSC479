@@ -19,12 +19,12 @@ window.onload = function() {
 
 
 	$('#select_session').on('change', function() {
-		 if($('#select_session').find(":selected").hasClass("validTxt")){
+		 if($('#select_session').find(":selected").hasClass("clientTurn")){
 		 	console.log("!!!!");
-		 	$('#select_session').css("color", "#33CC33");
+		 	$('#select_session').css("color", "black");
 		 }
 		 else{
-		 	$('#select_session').css("color", "red");
+		 	$('#select_session').css("color", "#CCCCCC");
 		 }
 		});
 
@@ -308,7 +308,6 @@ function login(){
 
 		      		  transition("#loginMenu", "#mainMenu", function(){
 		      				$("#title").animate({opacity:0},500, null);
-		      				$("#title").hide();
                       });                    
                       
 		     	}); 
@@ -316,8 +315,50 @@ function login(){
 	});
 }
 
+function loadNewSessionData(callback){
+
+	var a = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+	var ref = new Firebase(a);
+
+	ref.once("value", function(data){
+		console.log("rofl!");
+		var finished = data.val().finished;
+		$("#select_src").empty();
+		if(finished != undefined && finished.length > 0){
+			$("#select_src_label").show();
+			$("#select_src").show();
+			console.log(finished);
+			$("#select_src").append($("<option></option>")
+												   .attr("value","None")
+												   .text("None"));
+			for(var i = 0; i < finished.length; i++){
+				var item = finished[i];
+				$("#select_src").append($("<option></option>")
+												   .attr("value",item)
+												   .text(item));
+			}
+		}
+		else{
+			$("#select_src_label").hide();
+			$("#select_src").hide();
+		}
+		callback();
+	});
+
+}
+
 function loadNewSessionMenu(){
-	transition("#mainMenu", "#newSessionMenu", null);
+	$("#rulesConfig").hide();
+	$("#input_sessionName").val("");
+	$("#input_member").val("");
+	var load = function(){
+		loadNewSessionData(function(){
+			transition("#loading", "#newSessionMenu", null);
+		});
+	}
+
+	transition("#mainMenu", "#loading", load);
+
 	var sessionName = $("#input_sessionName").val();
 	var member = $("#input_member").val();
 
@@ -418,7 +459,9 @@ function beginTurn(){
 						var unsubscribe = literally.on('snapshotLoad', function() {
 
 							$("#menuWrapper").hide();
+							$("#title").hide();
 							$("#drawingWidget").show();
+
 							unsubscribe();
 							console.log("loaded a snapshot!");
 
@@ -430,8 +473,6 @@ function beginTurn(){
 							projectInfo = [selected];
 							console.log(data.val());
 							console.log(literally.loadSnapshotJSON(data.val()));
-							
-
 						});
 
 
@@ -471,6 +512,22 @@ function deleteProject(){
 		ref.once("value", function(data){
 			var obj = data.val();
 			if(obj != null && obj.turn == clientEmail){
+				var usersUrl = "https://glaring-heat-449.firebaseio.com/users";
+				var usersRef = new Firebase(usersUrl);
+
+				usersRef.once("value", function(data){
+					var users = data.val();
+					for(var i = 0; i < obj.members.length; i++){
+						var someMember = null;
+						for(key in users){
+							if(users[key].email == obj.members[i]){
+								appendToField(usersUrl + "/" + key, "finished", selected, null);
+							}
+						}
+					}
+				});
+				
+
 				var url = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
 				deleteFromField(url, "projects", selected, function(){
 
@@ -590,7 +647,6 @@ function createSession(){
 	var sessionName = $("#input_sessionName").val();
 	var member = $("#input_member").val();
 	console.log("looking for: " , member);
-	console.l
 
 	var ref = new Firebase(s).once("value",function(data){
 		var userList = data.val();
@@ -621,16 +677,41 @@ function createSession(){
 			projectInfo = [someUser, someUserKey, sessionName];
 			projectMode = 0;
 
-			transition("#newSessionMenu", "#loading", function(){
-				var unsubscribe = literally.on('clear', function() {
+			var selectedSrc = $("#select_src").val();
+			if(selectedSrc == "None"){
+				transition("#newSessionMenu", "#loading", function(){
+					var unsubscribe = literally.on('clear', function() {
+		 			 	$("#menuWrapper").hide();
+		 			 	$("#title").hide();
+						$("#drawingWidget").show();
+						unsubscribe(); 
+					});
 
-	 			 	$("#menuWrapper").hide();
-					$("#drawingWidget").show();
-					unsubscribe(); 
+					literally.clear();
 				});
+			}
+			else{
+				transition("#newSessionMenu", "#loading", function(){
+					var fileUrl = "https://glaring-heat-449.firebaseio.com/files/"+selectedSrc;
+					var fileRef = new Firebase(fileUrl);
+					var unsubscribe = literally.on('snapshotLoad', function() {
 
-				literally.clear();
-			});
+								$("#menuWrapper").hide();
+								$("#title").hide();
+								$("#drawingWidget").show();
+								unsubscribe();
+								console.log("loaded a snapshot!");
+
+							});
+
+							fileRef.once("value", function(data){
+								console.log(data.val());
+								console.log(literally.loadSnapshotJSON(data.val()));
+							});
+					});
+
+			}
+			
 		}
 
 	});
@@ -639,6 +720,12 @@ function createSession(){
 
 
 }
+
+function openRulesConfiguration(){
+	$("#rulesConfig").show()
+	console.log("hello");
+}
+
 var loadGalleryData = function (callback) {
 		// Query firebase for gallery related data
 		
@@ -667,19 +754,22 @@ var loadGalleryData = function (callback) {
 							$("#select_session").append($("<option></option>")
 												         .attr("value",item)
 												         .text(item)
-														 .addClass("validTxt"));
+														 .addClass("clientTurn"));
 						}	
-						else{
+						else if(obj.hasOwnProperty(item) && obj[item].turn != clientEmail){
 							$("#select_session").append($("<option></option>")
 												         .attr("value",item)
 												         .text(item)
-														 .addClass("errorTxt"));
-						}
-						if($($("#select_session").find("option")[0]).hasClass("validTxt")){
-							$("#select_session").css("color", "#33CC33");
+														 .addClass("memberTurn"));
 						}
 						else{
-							$("#select_session").css("color", "red");
+							deleteFromField(a, "projects", item);
+						}
+						if($($("#select_session").find("option")[0]).hasClass("clientTurn")){
+							$("#select_session").css("color", "black");
+						}
+						else{
+							$("#select_session").css("color", "#CCCCCC");
 						}
 				    }
 				}
@@ -727,7 +817,74 @@ function loadMainMenu(){
 }
 
 
+function loadFinishedData(callback){
+	var a = "https://glaring-heat-449.firebaseio.com/users/" + client.uid;
+	var ref = new Firebase(a);
+
+	ref.once("value", function(data){
+		console.log("rofl!");
+		var finished = data.val().finished;
+		$("#select_finished").empty();
+		if(finished != undefined && finished.length > 0){
+		
+			console.log(finished);
+			for(var i = 0; i < finished.length; i++){
+				var item = finished[i];
+				$("#select_finished").append($("<option></option>")
+												   .attr("value",item)
+												   .text(item));
+			}
+		}
+		callback();
+	});
+
+	
+}
+
+function loadFinishedMenu(){
+	
+	
+	var load = function(){
+
+		loadFinishedData(function(){
+			transition("#loading", "#finishedMenu", null);
+		});
+		
+	}
+
+	transition("#mainMenu", "#loading", load);
+
+}
+
+
+function loadFinished(){
+	console.log("ming");
+	
+	var selected = $("#select_finished").val();
+	if(selected != undefined && selected != "None"){
+		var fileUrl = "https://glaring-heat-449.firebaseio.com/files/" + selected;
+		var fileRef = new Firebase(fileUrl);
+
+		projectMode = 3;
+
+		var unsubscribe = literally.on('snapshotLoad', function() {
+							console.log("mong");
+								if(projectMode == 3){
+									window.open(literally.getImage().toDataURL());
+								}
+							});
+
+		fileRef.once("value", function(data){
+
+							
+								console.log(literally.loadSnapshotJSON(data.val()));
+							});
+	}
+				
+}
+
 function transition(last, next, callback){
+	$("#errorMsg").hide();
 	prevMenu = last;
 	currentMenu = next;
 	console.log(last, next);
