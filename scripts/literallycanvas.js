@@ -21,6 +21,7 @@ INFINITE = 'infinite';
 
 module.exports = LiterallyCanvas = (function() {
   function LiterallyCanvas(containerEl, opts) {
+    var self = this;
     this.containerEl = containerEl;
     this.setImageSize = __bind(this.setImageSize, this);
     bindEvents(this, this.containerEl, opts.keyboardShortcuts);
@@ -47,6 +48,8 @@ module.exports = LiterallyCanvas = (function() {
     this.undoStack = [];
     this.redoStack = [];
     this.isDragging = false;
+
+
     this.position = {
       x: 0,
       y: 0
@@ -576,6 +579,7 @@ module.exports = LiterallyCanvas = (function() {
 
   LiterallyCanvas.prototype.loadSnapshot = function(snapshot) {
     var k, shape, shapeRepr, _i, _j, _len, _len1, _ref1, _ref2;
+
     if (!snapshot) {
       return;
     }
@@ -596,7 +600,10 @@ module.exports = LiterallyCanvas = (function() {
         this.execute(new actions.AddShapeAction(this, shape));
       }
     }
+
+    var rot = Math.random()*360;
     this.repaintAllLayers();
+
     this.trigger('snapshotLoad');
     return this.trigger('drawingChange', {});
   };
