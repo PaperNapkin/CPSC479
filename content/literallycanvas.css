@@ -1,7 +1,7 @@
 .literally{
 	position:relative;
-	background-color:#ddd;
-	min-height:400px;
+	background-color:transparent;
+	min-height:90%;
 	-webkit-touch-callout:none;
 	-webkit-user-select:none;
 	-khtml-user-select:none;
