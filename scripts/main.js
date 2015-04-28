@@ -588,8 +588,9 @@ function beginTurn(){
 							projectInfo = [selected];
 							var drawingString = data.val();
 
-							if(obj["rotate"] == true){
+							if(rules["rotate"] == true){
 
+								console.log("applying rotation");
 
 								projectRotation = Math.random() * Math.PI * 2;
 
