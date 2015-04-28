@@ -2427,13 +2427,6 @@ Picker = React.createClass({
     }) : void 0, UndoRedoButtons({
       lc: lc,
       imageURLPrefix: imageURLPrefix
-    }), ZoomButtons({
-      lc: lc,
-      imageURLPrefix: imageURLPrefix
-    }), ClearButton({
-      lc: lc
-    }), ColorPickers({
-      lc: lc
     }));
   }
 });

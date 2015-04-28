@@ -32,7 +32,9 @@ window.onload = function() {
     */
 	literally = LC.init(
 	            document.getElementsByClassName('literally')[0],
-	            {imageURLPrefix: 'img'}
+	            {imageURLPrefix: 'img',
+	         	keyboardShortcuts: false,
+             	tools: [LC.tools.Pencil]}
         	);
 
 	$("#drawingWidget").hide();
@@ -568,7 +570,7 @@ function beginTurn(){
 							if(rules["zoom"] == true){
 								zoomJson();
 							}
-							
+
 							if(rules["pan"] == true){
 								panJson();
 							}

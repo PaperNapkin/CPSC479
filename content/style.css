@@ -1,12 +1,14 @@
+
+
 .menuBox{
 
 	min-height:200px;
 	width:300px;
-	background: #D8C7B5;
-	color: #3D2914;
+	background: #BADA97;
+	color: #434A54;
 	font-size: 20px;
-	font-family: Palatino;
-	border: 2px solid #7D644B;
+	font-family: 'PT Sans', sans-serif;
+	border: 2px solid #8CC152;
 	padding: 10px;
 	text-align: center;
 	margin: 20px;
@@ -19,31 +21,27 @@
 	border:none;
 	
 	margin:10px;
-	background:#E0D2C4;
+	background:#CFE5B6;
 }
 
 .menuButton:hover{
-	background:#E8DDD3;
+	background:#DCECCB;
 }
 .menuButton:active{
-	background:#E0D2C4;
+	background:#CFE5B6;
 }
 
 .menuInput{
 	min-width: 200px;
 	border: none;
-	border: 2px solid #7D644B;
+	border: 2px solid #8CC152;
 	padding-left:5px;
 	color: black;
 }
 
-@font-face {
-    font-family: Certa;
-    src: url("fonts/certa_sans.otf");
-}
 
 .headerStyle{
-	font-family: Palatino;
+	font-family: 'PT Sans', sans-serif;
 }
 
 .hidden{
@@ -63,11 +61,11 @@
 }
 
 .loadingBox{
-	border: 2px solid #2E1F0F;
+	border: 2px solid #38412D;
 	margin-top: 60px;
-	background: #7D644B;
+	background: #4a573c;
 	text-align: center;
-	color: #D8C7B5;
+	color: #BADA97;
 	padding: 2px;
 }
 
