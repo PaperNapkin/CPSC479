@@ -91,11 +91,14 @@
 
 .literally .lc-drawing{
 	left:80px;
+	border-left: 1px dotted grey;
+	border-bottom: 1px dotted grey;
+	bottom: 75px;
 }
 
 .literally .lc-options{
 	left:80px;
-	background-color: #fff;
+	background-color: transparent;
 }
 
 .literally .lc-picker{
@@ -137,6 +140,7 @@
 
 .literally .lc-options{
 	border-top: none;
+	height: 75px;
 }
 
 .literally .lc-options .basic-button{
