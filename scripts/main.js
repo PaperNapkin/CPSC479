@@ -12,22 +12,24 @@ var clientEmail = null;
 var literally = null;
 var projectInfo = null;
 var projectMode = null;
+var projectRotation = null;
+var rotationCenter = null;
 
 
 
 window.onload = function() {
 
-
+	/*
 	$('#select_session').on('change', function() {
 		 if($('#select_session').find(":selected").hasClass("clientTurn")){
 		 	console.log("!!!!");
-		 	$('#select_session').css("color", "black");
+		 	$('#select_session').find(":selected").css("color", "black");
 		 }
 		 else{
-		 	$('#select_session').css("color", "#CCCCCC");
+		 	$('#select_session').find(":selected").css("color", "#CCCCCC");
 		 }
 		});
-
+    */
 	literally = LC.init(
 	            document.getElementsByClassName('literally')[0],
 	            {imageURLPrefix: 'img'}
@@ -36,6 +38,95 @@ window.onload = function() {
 	$("#drawingWidget").hide();
 
 };
+
+function panJson() {
+       // x and y between -100 and 100
+       var x = Math.floor(Math.random() * 201) - 100;
+       var y = Math.floor(Math.random() * 201) - 100;
+       literally.pan(x, y);
+ }
+
+function zoomJson() {
+       var z = Math.floor(Math.random() * 10);
+       literally.zoom(z);
+}
+
+function rotatePoint(rot, point){
+	var x1 = point[0] * Math.cos(rot) - point[1] * Math.sin(rot);
+	var y1 = point[0] * Math.sin(rot) + point[1] * Math.cos(rot);
+	var arr = new Array(2);
+	arr[0] = x1;
+	arr[1] = y1;
+	return arr;
+}
+
+function rotateSnapshot (json, rot) {
+
+    // json is passed in as a string from firebase
+    // JSON.parse() puts it into an object that we can access with JS
+
+    var snapshot = JSON.parse(json);
+
+    console.log(snapshot);
+   // need to somehow get centerpoint of canvas... maybe passed in as
+  // other args, or detected by finding boundary points in shape objects 
+
+
+    // get array of all shapes
+    var shapes = snapshot["shapes"];
+    console.log(shapes);
+    
+    
+    if(rotationCenter == null){
+    	var minX = null;
+	    var maxX = null;
+	    var minY = null;
+	    var maxY = null;
+
+	    for( var i = 0; i < shapes.length; i++){
+	    	 var points = shapes[i]["data"]["pointCoordinatePairs"];
+	    	  for(var j = 0; j < points.length; j++){
+	    	  	  if(j == 0 && i == 0){
+	    	  	  	minX = points[j][0];
+	    	  	  	maxX = points[j][0];
+	    	  	  	minY = points[j][1];
+	    	  	    maxY = points[j][1];
+	    	  	  }
+	    	  	  minX = Math.min(minX, points[j][0]);
+	    	  	  maxX = Math.max(maxX, points[j][0]);
+	    	  	  minY = Math.min(minY, points[j][1]);
+	    	  	  maxY = Math.max(maxY, points[j][1]);
+	    	  }
+	    }
+
+    	rotationCenter = new Array(2);
+    	rotationCenter[0] = (maxX + minX)/2;
+    	rotationCenter[1] = (maxY + minY)/2;
+    	
+    }
+   
+
+    for( var i = 0; i < shapes.length; i++ ) {
+        var points = shapes[i]["data"]["pointCoordinatePairs"];
+        console.log(points);
+
+        for(var j = 0; j < points.length; j++){
+            // rotatePoint will be some other function that you write that does a rotation
+           points[j][0] = points[j][0] - rotationCenter[0];
+           points[j][1] = points[j][1] - rotationCenter[1];
+           points[j] = rotatePoint(rot, points[j]);
+           points[j][0] = points[j][0] + rotationCenter[0];
+           points[j][1] = points[j][1] + rotationCenter[1];
+         }
+
+    }
+
+    console.log("finished rotation", snapshot);
+
+    return snapshot;
+}
+
+
 
 function endTurn(){
 	var sessionName = $("#input_sessionName").val();
@@ -47,6 +138,7 @@ function endTurn(){
 				var someUser = projectInfo[0];
 				var someUserKey = projectInfo[1];
 				var sessionName = projectInfo[2];
+				var rules = projectInfo[3];
 
 				var s = "https://glaring-heat-449.firebaseio.com/projects/" + sessionName;
 				var projRef = new Firebase(s);
@@ -63,7 +155,7 @@ function endTurn(){
 				projectObject.members.push(clientEmail);
 				projectObject.members.push(someUser.email);
 				projectObject["turn"] = someUser.email;
-				projectObject["rules"] = "";
+				projectObject["rules"] = rules;
 				projectObject["file"] = "";
 
 				console.log(projectObject);
@@ -83,15 +175,25 @@ function endTurn(){
 				appendToField(b, "projects", sessionName, null);
 
 				projectInfo = null;
-			}
+				literally.setPan(0,0);
+				literally.setZoom(1);
+;			}
 
 	var update = function (){
 
 		var fileUrl = "https://glaring-heat-449.firebaseio.com/files/" + projectInfo[0];
 		console.log(fileUrl);
 		var fileRef = new Firebase(fileUrl);
+		var newDrawing = literally.getSnapshotJSON();
 
-		fileRef.set(literally.getSnapshotJSON());
+
+		if(projectRotation != null){
+			newDrawing = JSON.stringify(rotateSnapshot(newDrawing, -projectRotation));
+			projectRotation = null;
+			rotationCenter = null;
+		}
+
+		fileRef.set(newDrawing);
 
 		var projUrl = "https://glaring-heat-449.firebaseio.com/projects/" + projectInfo[0];
 		var projRef = new Firebase(projUrl);
@@ -108,6 +210,8 @@ function endTurn(){
 				}
 				console.log("now its turn for : "+ obj.turn);
 				projRef.set(obj);
+				literally.setPan(0,0);
+				literally.setZoom(1);
 			}
 		});
 
@@ -121,6 +225,8 @@ function endTurn(){
 	else{
 		create();
 	}
+
+	
 
 	$("#drawingWidget").hide();
 	$("#menuWrapper").show();
@@ -452,11 +558,20 @@ function beginTurn(){
 					if(obj != null && obj.turn == clientEmail){
 
 						
-
+						var rules = obj["rules"];
 						var fileUrl = "https://glaring-heat-449.firebaseio.com/files/" + selected;
 						var fileRef = new Firebase(fileUrl);
 
 						var unsubscribe = literally.on('snapshotLoad', function() {
+
+							//Apply pan and zoom
+
+							if(rules["pan"] == true){
+								panJson();
+							}
+							if(rules["zoom"] == true){
+								zoomJson();
+							}
 
 							$("#menuWrapper").hide();
 							$("#title").hide();
@@ -471,12 +586,28 @@ function beginTurn(){
 
 							projectMode = 1;
 							projectInfo = [selected];
-							console.log(data.val());
-							console.log(literally.loadSnapshotJSON(data.val()));
+							var drawingString = data.val();
+
+							if(obj["rotate"] == true){
+
+
+								projectRotation = Math.random() * Math.PI * 2;
+
+								var rotatedJson = rotateSnapshot( drawingString, projectRotation);
+
+								console.log("starting drawing widget");
+
+								drawingString = JSON.stringify(rotatedJson);
+								// apply rotation
+							}
+							
+							
+							literally.loadSnapshotJSON(drawingString);
+							
 						});
 
 
-						console.log("starting drawing widget");
+						
 					}
 					else if(obj == null){
 
@@ -693,8 +824,14 @@ function createSession(){
 				}
 				else{
 					console.log("Success: ", someUser);
-					
-					projectInfo = [someUser, someUserKey, sessionName];
+
+					var rulesObj = new Object();
+
+					rulesObj["rotate"] = $("#checkbox_rot")[0].checked;
+					rulesObj["pan"] = $("#checkbox_pan")[0].checked;
+					rulesObj["zoom"] = $("#checkbox_zoom")[0].checked;
+
+					projectInfo = [someUser, someUserKey, sessionName, rulesObj];
 					projectMode = 0;
 
 					var selectedSrc = $("#select_src").val();
@@ -778,24 +915,19 @@ var loadGalleryData = function (callback) {
 						if(obj.hasOwnProperty(item) && obj[item].turn == clientEmail){
 							$("#select_session").append($("<option></option>")
 												         .attr("value",item)
-												         .text(item)
-														 .addClass("clientTurn"));
+												         .text(item));
+														// .addClass("clientTurn"));
 						}	
 						else if(obj.hasOwnProperty(item) && obj[item].turn != clientEmail){
-							$("#select_session").append($("<option></option>")
+							/*$("#select_session").append($("<option></option>")
 												         .attr("value",item)
 												         .text(item)
-														 .addClass("memberTurn"));
+														 .addClass("memberTurn"));*/
 						}
 						else{
 							deleteFromField(a, "projects", item);
 						}
-						if($($("#select_session").find("option")[0]).hasClass("clientTurn")){
-							$("#select_session").css("color", "black");
-						}
-						else{
-							$("#select_session").css("color", "#CCCCCC");
-						}
+			
 				    }
 				}
 				

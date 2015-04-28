@@ -50,8 +50,16 @@
 						<option> None </option>
 					</select>	<br />
 				<button class="menuButton" onClick="openRulesConfiguration()"> Configure Rules </button>
-				<div id="rulesConfig" style="display: none;">
-					<label> Rotation </label><input type="text"></input>
+				<div id="rulesConfig" class="center-block" style="margin-left: 15%; display: none;">
+					<div style="float: left; width:60x">
+						<label> Rotation </label><br><input id="checkbox_rot" type="checkbox"></input>
+					</div>
+					<div style="float: left; width:60px">
+						<label> Pan </label><br><input id="checkbox_pan" type="checkbox"></input>
+					</div>
+					<div style="float: left; width:60px">
+						<label> Zoom </label><br><input id="checkbox_zoom" type="checkbox"></input>
+					</div>
 				</div>
 				<button id="createSessionButton" class="menuButton" onclick="createSession()"> Create </button> <br />
 				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
@@ -94,7 +102,7 @@
 
 		<div class="loadingBox" id="loading" style="opacity: 0; display: none;">
 				<div id="loadingProgress">
-					<h4> <img id="loadingSpinner" src="content/loader.gif"</img> </h4> 
+					<h4><img id="loadingSpinner" src="content/loader.gif"></img> </h4> 
 				</div>
 				<div id="loadingResult" style="display: none;">
 				</div>
