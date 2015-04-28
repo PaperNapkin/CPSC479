@@ -669,7 +669,7 @@ function deleteProject(){
 					ref.remove( function(){
 
 						$("#loadingProgress").hide();
-						$("#loadingResult").text("Project deleted!");
+						$("#loadingResult").text("Napkin published!");
 						$("#loadingResult").show();
 
 						loadGalleryData(function(){
