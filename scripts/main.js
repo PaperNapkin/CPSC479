@@ -565,13 +565,14 @@ function beginTurn(){
 						var unsubscribe = literally.on('snapshotLoad', function() {
 
 							//Apply pan and zoom
-
-							if(rules["pan"] == true){
-								panJson();
-							}
 							if(rules["zoom"] == true){
 								zoomJson();
 							}
+							
+							if(rules["pan"] == true){
+								panJson();
+							}
+							
 
 							$("#menuWrapper").hide();
 							$("#title").hide();
