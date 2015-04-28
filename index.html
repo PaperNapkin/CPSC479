@@ -1,124 +1,107 @@
 <html>
-
-<head>
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="content/style.css">
-	<link rel="stylesheet" type="text/css" href="content/bootstrap.min.css">
-	<link href="content/literallycanvas.css" rel="stylesheet">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.10.0/react-with-addons.js"></script>
-    <script src="scripts/literallycanvas.js"></script>
-    <script src="scripts/jquery-1.9.1.min.js"></script>
-   	<script src="scripts/bootstrap.min.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
-
-    <script type="text/javascript" src="scripts/main.js"></script>
-
-</head>
-
-<body>
-	<div class="center-block">
-	<h1 id="title" class="text-center headerStyle"> <img src="content/logo.jpg" height="100px" width="100px"></h1>
-	<div id="menuWrapper" class="menuBox center-block">
-		<div id="loginMenu">
-		
-				<label for userName>Username </label>
-				<input class="menuInput" id="input_userName" type="text" name="userName" value=""></input>
-				<label for password>Password </label>
-				 <input class="menuInput" id="input_password" type="password" name="Password" value=""></input>
-				 <br>
-				<button class="menuButton" onclick="newUser()">New User</button>
-				<button class="menuButton" onclick="login()">Login</button> 
-				
-		</div>
-
-		<div id="mainMenu" style="opacity: 0; display: none;">
-				<h1 class="text-center headerStyle"> Menu </h1>
-				<button class="menuButton" onclick="loadNewSessionMenu()"> New Session </button> <br/>
-				<button class="menuButton" onclick="loadGalleryMenu()"> Napkins </button> <br />
-				<button class="menuButton" onclick="loadInvitesMenu()"> Invitations </button> <br />
-				<button class="menuButton" onclick="loadFinishedMenu()"> Gallery </button> <br />
-		</div>
-
-		<div id="newSessionMenu" style="opacity: 0; display: none;">
-				<h2 class="text-center headerStyle"> Create New Session </h1>
-
-				<label for sessionName> Session Name </label>
-				<input class="menuInput" id="input_sessionName" type="text" name="sessionName"></input>
-				<label for member>Collaborator</label><br />
-				<input class="menuInput" id="input_member" type="text" name="member"></input>
-					<label id="select_src_label"> Use Existing Napkin as Source? </label>
-					<select class="menuInput" id="select_src">
-						<option> None </option>
-					</select>	<br />
-				<button class="menuButton" onClick="openRulesConfiguration()"> Configure Rules </button>
-				<div id="rulesConfig" class="center-block" style="margin-left: 15%; display: none;">
-					<div style="float: left; width:60x">
-						<label> Rotation </label><br><input id="checkbox_rot" type="checkbox"></input>
-					</div>
-					<div style="float: left; width:60px">
-						<label> Pan </label><br><input id="checkbox_pan" type="checkbox"></input>
-					</div>
-					<div style="float: left; width:60px">
-						<label> Zoom </label><br><input id="checkbox_zoom" type="checkbox"></input>
-					</div>
-				</div>
-				<button id="createSessionButton" class="menuButton" onclick="createSession()"> Create </button> <br />
-				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
-
-		</div>
-
-		<div id="invitesMenu" style="opacity: 0; display: none;">
-		<br/>
-			<h2> Accept an Invite </h2>
-			<select class="menuInput" id="select_invite">
-					<option> None </option>
-			</select>	<br />
-			<button class="menuButton" onclick="acceptInvite()"> Accept Invite </button> <br />
-			<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
-
-		</div>
-
-
-		<div id="galleryMenu" style="opacity: 0; display: none;">
-				<h2 class="text-center headerStyle"> Pick Existing Session </h1>
-				<select class="menuInput" id="select_session">
-					<option> None </option>
-				</select>	<br />
-				<button class="menuButton" onclick="beginTurn()"> Begin Turn </button> <br />
-				<button class="menuButton" onclick="deleteProject()"> Delete Project </button> <br />
-				<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
-		</div>
-
-		<div id="finishedMenu" style="opacity: 0; display: none;">
-			<h2 class="text-center headerStyle"> Pick Napkin to View </h1>
-
-				<select class="menuInput" id="select_finished">
-					<option> None </option>
-				</select>	<br />
-
-				<button class="menuButton" onclick="loadFinished()"> Load </button> <br />
-
-			<button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
-		</div>
-
-		<div class="loadingBox" id="loading" style="opacity: 0; display: none;">
-				<div id="loadingProgress">
-					<h4><img id="loadingSpinner" src="content/loader1.gif"></img> </h4> 
-				</div>
-				<div id="loadingResult" style="display: none;">
-				</div>
-		</div>
-
-		<div id="errorMsg"></div>
-
-	</div>
-	
-	<div id="drawingWidget">
-		<div class="literally"></div>
-		<input type="image" height="40" width="60" src="content/pass-napkin.png" id="endTurnButton" onclick="endTurn()"></button>
-	</div>
-</div>
-
-</body>
-  
+    <head>
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="content/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="content/literallycanvas.css">
+        <link rel="stylesheet" type="text/css" href="content/style.css">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.10.0/react-with-addons.js"></script>
+        <script src="scripts/literallycanvas.js"></script>
+        <script src="scripts/jquery-1.9.1.min.js"></script>
+        <script src="scripts/bootstrap.min.js"></script>
+        <script src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
+        <script type="text/javascript" src="scripts/main.js"></script>
+    </head>
+    <body>
+        <div class="center-block">
+            <h1 id="title" class="text-center headerStyle"> <img src="content/logo.jpg" height="100px" width="100px"></h1>
+            <div id="menuWrapper" class="menuBox center-block">
+                <div id="loginMenu">
+                    <label for userName>Username </label>
+                    <input class="menuInput" id="input_userName" type="text" name="userName" value=""></input>
+                    <label for password>Password </label>
+                    <input class="menuInput" id="input_password" type="password" name="Password" value=""></input>
+                    <br>
+                    <button class="menuButton" onclick="newUser()">New User</button>
+                    <button class="menuButton" onclick="login()">Login</button> 
+                </div>
+                <div id="mainMenu" style="opacity: 0; display: none;">
+                    <h1 class="text-center headerStyle"> Menu </h1>
+                    <button class="menuButton" onclick="loadNewSessionMenu()"> New Session </button> <br/>
+                    <button class="menuButton" onclick="loadGalleryMenu()"> Napkins </button> <br />
+                    <button class="menuButton" onclick="loadInvitesMenu()"> Invitations </button> <br />
+                    <button class="menuButton" onclick="loadFinishedMenu()"> Gallery </button> <br />
+                </div>
+                <div id="newSessionMenu" style="opacity: 0; display: none;">
+                    <h2 class="text-center headerStyle">
+                    Create New Session </h1>
+                    <label for sessionName> Session Name </label>
+                    <input class="menuInput" id="input_sessionName" type="text" name="sessionName"></input>
+                    <label for member>Collaborator</label><br />
+                    <input class="menuInput" id="input_member" type="text" name="member"></input>
+                    <label id="select_src_label"> Use Existing Napkin as Source? </label>
+                    <select class="menuInput" id="select_src">
+                        <option> None </option>
+                    </select>
+                    <br />
+                    <button class="menuButton" onClick="openRulesConfiguration()"> Configure Rules </button>
+                    <div id="rulesConfig" class="center-block" style="margin-left: 15%; display: none;">
+                        <div style="float: left; width:60x">
+                            <label> Rotation </label><br><input id="checkbox_rot" type="checkbox"></input>
+                        </div>
+                        <div style="float: left; width:60px">
+                            <label> Pan </label><br><input id="checkbox_pan" type="checkbox"></input>
+                        </div>
+                        <div style="float: left; width:60px">
+                            <label> Zoom </label><br><input id="checkbox_zoom" type="checkbox"></input>
+                        </div>
+                    </div>
+                    <button id="createSessionButton" class="menuButton" onclick="createSession()"> Create </button> <br />
+                    <button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+                </div>
+                <div id="invitesMenu" style="opacity: 0; display: none;">
+                    <br/>
+                    <h2> Accept an Invite </h2>
+                    <select class="menuInput" id="select_invite">
+                        <option> None </option>
+                    </select>
+                    <br />
+                    <button class="menuButton" onclick="acceptInvite()"> Accept Invite </button> <br />
+                    <button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+                </div>
+                <div id="galleryMenu" style="opacity: 0; display: none;">
+                    <h2 class="text-center headerStyle">
+                    Pick Existing Session </h1>
+                    <select class="menuInput" id="select_session">
+                        <option> None </option>
+                    </select>
+                    <br />
+                    <button class="menuButton" onclick="beginTurn()"> Begin Turn </button> <br />
+                    <button class="menuButton" onclick="deleteProject()"> Delete Project </button> <br />
+                    <button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+                </div>
+                <div id="finishedMenu" style="opacity: 0; display: none;">
+                    <h2 class="text-center headerStyle">
+                    Pick Napkin to View </h1>
+                    <select class="menuInput" id="select_finished">
+                        <option> None </option>
+                    </select>
+                    <br />
+                    <button class="menuButton" onclick="loadFinished()"> Load </button> <br />
+                    <button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
+                </div>
+                <div class="loadingBox" id="loading" style="opacity: 0; display: none;">
+                    <div id="loadingProgress">
+                        <h4><img id="loadingSpinner" src="content/loader1.gif"></img> </h4>
+                    </div>
+                    <div id="loadingResult" style="display: none;">
+                    </div>
+                </div>
+                <div id="errorMsg"></div>
+            </div>
+            <div id="drawingWidget">
+                <div class="literally"></div>
+                <input type="image" height="40" width="60" src="content/pass-napkin.png" id="endTurnButton" onclick="endTurn()"></button>
+            </div>
+        </div>
+    </body>
 </html>

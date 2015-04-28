@@ -1,7 +1,4 @@
-
-
 .menuBox{
-
 	min-height:200px;
 	width:300px;
 	background: #BADA97;
@@ -11,15 +8,11 @@
 	border: 2px solid #8CC152;
 	padding: 10px;
 	text-align: center;
-	margin: 20px;
-
 }
-
 
 .menuButton{
 	width:200px;
 	border:none;
-	
 	margin:10px;
 	background:#CFE5B6;
 }
@@ -27,6 +20,7 @@
 .menuButton:hover{
 	background:#DCECCB;
 }
+
 .menuButton:active{
 	background:#CFE5B6;
 }
@@ -39,13 +33,11 @@
 	color: black;
 }
 
-
 .headerStyle{
 	font-family: 'PT Sans', sans-serif;
 }
 
 .hidden{
-
 	opacity:0;
 	display:none;
 }
@@ -75,4 +67,79 @@
 
 .memberTurn{
 	color: "#CCCCCC";
+}
+
+#endTurnButton {
+	position: absolute;
+	top: 110px;
+	left: 10px;
+}
+
+/* Literally Canvas Style Customizations */
+
+.literally{
+	position: static;
+	min-height:0px;
+	height: 100%;
+}
+
+.literally .lc-picker{
+	top:50px;
+	width:90px;
+	background-color: transparent;
+}
+
+.literally .lc-drawing{
+	left:80px;
+}
+
+.literally .lc-options{
+	left:80px;
+	background-color: #fff;
+}
+
+.literally .lc-picker{
+	z-index: 0;
+	border-right: none;
+}
+
+.literally .lc-picker .toolbar-button {
+	left: 15px;
+}
+
+.literally .lc-picker .toolbar-button{
+	background: transparent;
+	background-image: none;
+}
+
+.literally .lc-picker .toolbar-button.disabled{
+	background-color:transparent;
+}
+
+.literally .lc-picker .thin-button{
+	width: 50px;
+	height: 50px;
+	border-bottom: none;
+	border-right: none;
+}
+
+.literally .lc-picker .thin-button:nth-child(2n) {
+	width: 50px;
+}
+
+.literally .lc-picker .fat-button{
+	border-bottom: none;
+}
+
+.literally .lc-picker .color-well-label{
+	border-bottom: none;
+}
+
+.literally .lc-options{
+	border-top: none;
+}
+
+.literally .lc-options .basic-button{
+	background: #fff;
+	background-image: none;
 }
