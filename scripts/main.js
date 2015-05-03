@@ -1084,6 +1084,7 @@ function menuReturn(){
 	$("#menuWrapper").show();
 }
 function loadSlider(){
+
 	$("#title").hide();
 	var selected = $("#select_finished").val();
 	if(selected != undefined && selected != "None"){
@@ -1093,26 +1094,36 @@ function loadSlider(){
 			if(data.val() != null){
 				console.log(data.val());
 				sliderImages = data.val();
-				var last = sliderImages[sliderImages.length-1];
-
-				var lastImage = new Image();
-				lastImage.src = last;
-
+				
 				sliderIdx = 0;
-
-
-				$("#sliderCanvas").attr("height", lastImage.naturalHeight);
-				$("#sliderCanvas").attr("width", lastImage.naturalWidth);
 
 				var first = sliderImages[0];
 
 				var firstImage = new Image();
 				firstImage.src = first;
 
+				var width = firstImage.naturalWidth;
+				var height = firstImage.naturalHeight;
+
+				var aspectWidth = width/800;
+				var aspectHeight = height/600;
 
 				var canvas = document.getElementById("sliderCanvas");
 				var ctx = canvas.getContext("2d");
-				ctx.drawImage(firstImage, 0,0);
+			
+				var scale = 1;
+				if(aspectWidth > 1 || aspectHeight > 1){
+					scale = Math.max(aspectHeight, aspectWidth);
+
+				}
+
+				ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+				ctx.drawImage(firstImage, 0,0, width/scale, height/scale);
+				
+
+
+
+			
 
 				$("#menuWrapper").hide();
 				$("#sliderWidget").show();
@@ -1132,7 +1143,18 @@ function sliderNext(){
 		ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
 		var newImage = new Image();
 		newImage.src = sliderImages[sliderIdx];
-		ctx.drawImage(newImage,0,0);
+
+		var width = newImage.naturalWidth;
+		var height = newImage.naturalHeight;
+
+		var aspectWidth = width/800;
+		var aspectHeight = height/600;
+
+		var scale = 1;
+		if(aspectWidth > 1 || aspectHeight > 1){
+			scale = Math.max(aspectHeight, aspectWidth);
+		}
+		ctx.drawImage(newImage, 0,0, width/scale, height/scale);
 	}
 }
 
@@ -1144,6 +1166,17 @@ function sliderPrev(){
 		ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
 		var newImage = new Image();
 		newImage.src = sliderImages[sliderIdx];
-		ctx.drawImage(newImage,0,0);
+
+		var width = newImage.naturalWidth;
+		var height = newImage.naturalHeight;
+
+		var aspectWidth = width/800;
+		var aspectHeight = height/600;
+
+		var scale = 1;
+		if(aspectWidth > 1 || aspectHeight > 1){
+			scale = Math.max(aspectHeight, aspectWidth);
+		}
+		ctx.drawImage(newImage, 0,0, width/scale, height/scale);
 	}
 }
