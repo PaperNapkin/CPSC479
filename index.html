@@ -86,7 +86,8 @@
                         <option> None </option>
                     </select>
                     <br />
-                    <button class="menuButton" onclick="loadFinished()"> Load </button> <br />
+                    <button class="menuButton" onclick="loadFinished()"> Load Most Recent</button> <br />
+                    <button class="menuButton" onclick="loadSlider()"> Load History Slider </button> <br />
                     <button class="menuButton" onclick="loadMainMenu()"> Back </button> <br />
                 </div>
                 <div class="loadingBox" id="loading" style="opacity: 0; display: none;">
@@ -101,6 +102,12 @@
             <div id="drawingWidget">
                 <div class="literally"></div>
                 <input type="image" height="40" width="60" src="content/pass-napkin.png" id="endTurnButton" onclick="endTurn()"></button>
+            </div>
+            <div id="sliderWidget" style="display: none;">
+                <button class="menuButton" onclick="menuReturn()">Return to App</button>
+                <button class="menuButton" onclick="sliderPrev()">Previous</button>
+                <button class="menuButton" onclick="sliderNext()">Next</button>
+                <canvas id="sliderCanvas"></canvas>
             </div>
         </div>
     </body>

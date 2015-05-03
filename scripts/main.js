@@ -15,7 +15,8 @@ var projectMode = null;
 var projectRotation = null;
 var rotationCenter = null;
 
-
+var sliderImages = null;
+var sliderIdx = null;
 
 window.onload = function() {
 
@@ -34,7 +35,7 @@ window.onload = function() {
 	            document.getElementsByClassName('literally')[0],
 	            {imageURLPrefix: 'img',
 	         	keyboardShortcuts: false,
-             	tools: [LC.tools.Pencil]}
+             	tools: [LC.tools.Pencil,  LC.tools.Pan]}
         	);
 
 	$("#drawingWidget").hide();
@@ -151,6 +152,15 @@ function endTurn(){
 				var fileRef = new Firebase(fileUrl);
 				fileRef.set(literally.getSnapshotJSON());
 
+				var stackUrl =  "https://glaring-heat-449.firebaseio.com/stack/" + sessionName;
+				var stackRef = new Firebase(stackUrl);
+				stackRef.set({bogus:"bogus"}, function(){
+					var pngData = literally.getImage().toDataURL();
+					appendToField(stackUrl, "images", literally.getImage().toDataURL(), null);
+			});
+
+				
+
 				console.log(client);
 
 				projectObject["members"] = new Array();
@@ -199,6 +209,10 @@ function endTurn(){
 
 		var projUrl = "https://glaring-heat-449.firebaseio.com/projects/" + projectInfo[0];
 		var projRef = new Firebase(projUrl);
+
+		var stackUrl =  "https://glaring-heat-449.firebaseio.com/stack/" + projectInfo[0];
+		var pngData = literally.getImage().toDataURL();
+		appendToField(stackUrl, "images", literally.getImage().toDataURL(), null);
 
 		projRef.once("value", function(data){
 			if(data.val() != null){
@@ -384,7 +398,7 @@ function login(){
 
 		  } else { //Successful login
 
-		  	clientEmail =  $("#input_userName").val();
+		  	clientEmail =  $("#input_userName").val().toLowerCase();
 
 		  	$('#errorMsg').text('');
 		
@@ -780,7 +794,7 @@ function createSession(){
 	var s = "https://glaring-heat-449.firebaseio.com/users/";
 
 	var sessionName = $("#input_sessionName").val();
-	var member = $("#input_member").val();
+	var member = $("#input_member").val().toLowerCase();
 	console.log("looking for: " , member);
 
 	var ref = new Firebase(s).once("value",function(data){
@@ -1062,3 +1076,74 @@ function transition(last, next, callback){
 	$("button").attr('disabled', "true");
 }
 
+function menuReturn(){
+	sliderImages = null;
+	sliderIdx = null;
+	console.log("returning to app");
+	$("#sliderWidget").hide();
+	$("#menuWrapper").show();
+}
+function loadSlider(){
+	$("#title").hide();
+	var selected = $("#select_finished").val();
+	if(selected != undefined && selected != "None"){
+		var stackUrl = "https://glaring-heat-449.firebaseio.com/stack/" + selected + "/images";
+		var stackRef = new Firebase(stackUrl);
+		stackRef.once("value", function(data){
+			if(data.val() != null){
+				console.log(data.val());
+				sliderImages = data.val();
+				var last = sliderImages[sliderImages.length-1];
+
+				var lastImage = new Image();
+				lastImage.src = last;
+
+				sliderIdx = 0;
+
+
+				$("#sliderCanvas").attr("height", lastImage.naturalHeight);
+				$("#sliderCanvas").attr("width", lastImage.naturalWidth);
+
+				var first = sliderImages[0];
+
+				var firstImage = new Image();
+				firstImage.src = first;
+
+
+				var canvas = document.getElementById("sliderCanvas");
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(firstImage, 0,0);
+
+				$("#menuWrapper").hide();
+				$("#sliderWidget").show();
+			
+			}
+
+			
+		});
+	}
+}
+
+function sliderNext(){
+	if(sliderIdx < (sliderImages.length - 1)){
+		sliderIdx++;
+		var canvas = document.getElementById("sliderCanvas");
+		var ctx = canvas.getContext("2d");
+		ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+		var newImage = new Image();
+		newImage.src = sliderImages[sliderIdx];
+		ctx.drawImage(newImage,0,0);
+	}
+}
+
+function sliderPrev(){
+	if(sliderIdx > 0){
+		sliderIdx--;
+		var canvas = document.getElementById("sliderCanvas");
+		var ctx = canvas.getContext("2d");
+		ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+		var newImage = new Image();
+		newImage.src = sliderImages[sliderIdx];
+		ctx.drawImage(newImage,0,0);
+	}
+}
